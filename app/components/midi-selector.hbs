@@ -1,0 +1,8 @@
+<h1> {{ @selectorType }}</h1>
+<p> Current {{@selectorType}}: {{ @currentSelection }} </p>
+<select {{on "change" @onSelectionChange }}>
+  <option value="" selected disabled hidden>Choose here</option>
+  {{#each @list as |selection|}}
+    <option value={{selection}}>{{selection}}</option>
+  {{/each}}
+</select>

@@ -1,6 +1,22 @@
-{{!-- The following component displays Ember's default welcome message. --}}
-<WelcomePage />
-{{!-- Feel free to remove this! --}}
+Chord Trainer
 
-{{outlet}}
+<MidiSwitch
+@toggle = {{ this.toggleMidiSwitch }}
+@status = {{ this.midiEnabled }} />
+
+{{#if this.midiEnabled}}
+
+  <MidiSelector
+  @selectorType = "Midi Input"
+  @onSelectionChange = {{this.updateInputSelection }}
+  @currentSelection = {{this.selectedInput}}
+  @list = {{ this.midiInputs }}/>
+
+  <MidiSelector
+  @selectorType = "Midi Output"
+  @onSelectionChange = {{this.updateOutputSelection }}
+  @currentSelection = {{this.selectedOutput}}
+  @list = {{ this.midiOutputs }}/>
+
+{{/if}}
 
