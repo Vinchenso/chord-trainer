@@ -1,4 +1,9 @@
 <h1>Midi Switch</h1>
 Status: {{@status}}
+Error: {{@error}}
 
-<button {{on "click" @toggle}}>Toggle</button>
+{{#if @status}}
+  <button {{on "click" @disabler}}>Disable</button>
+{{else}}
+  <button {{on "click" @enabler}}>Enable</button>
+{{/if}}

@@ -1,46 +1,43 @@
 import Service from '@ember/service';
 import WebMidi from 'webmidi'
-
+import { tracked } from '@glimmer/tracking'
 export default class WebmidiService extends Service {
 
   inputs = [];
   outputs = [];
+  errors = [];
 
-  midiEnabled = false
+  @tracked midiEnabled = false
 
-  async add(){
+  inputs() {
+    return this.inputs
+  }
 
-    WebMidi.enable(function(err){
-      if(err){
-        console.warn(err)
-      }
-    }, true
-    )
-    this.enabled = true
-    this.inputs =  WebMidi.inputs;
-    this.outputs = WebMidi.outputs;
-    console.log( WebMidi.inputs )
+  midiStatus() {
+     return WebMidi.enabled
+  }
+
+  updateInputs(){
+    this.inputs = WebMidi.inputs
+  }
+
+  updateOutputs(){
+    this.outputs = WebMidi.outputs
+  }
+
+  async enable(){
+    await WebMidi.enable({},true)
+    this.midiEnabled = true
+    this.updateInputs()
+    this.updateOutputs()
 
   }
 
-  empty(){
-    this.inputs.clear()
-    this.outputs.clear()
-
+  disable(){
+    WebMidi.disable()
+    this.midiEnabled = false
+    this.updateInputs()
+    this.updateOutputs()
   }
-  refresh(){
-   const self = this
-    WebMidi.enable( function(err){
-  if (err) {
-    console.log("WebMidi could not be enabled.", err);
-  } else {
-    console.log("WebMidi enabled!");
-    console.log( WebMidi.inputs )
-    console.log( WebMidi.outputs )
 
-    self.add()
-  }
-    }, true)
-
-  }
 }

@@ -1,18 +1,19 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object'
+import { action, computed } from '@ember/object'
 import { inject as service } from '@ember/service';
 import { tracked } from '@glimmer/tracking'
+import { equal } from '@ember/object/computed'
 
 export default class ApplicationController extends Controller {
 
-  midiInputs  = [1,2,3,4]
-  midiOutputs = ["a","b"]
-  midiEnabled = false
+  midiInputs  = []
+  midiOutputs = []
+  midiError = 'shit'
 
   @tracked selectedInput = null
   @tracked selectedOutput = null
 
-  @service('webmidi') webmidi
+  @service webmidi;
 
   @action
   updateInputSelection(ev){
@@ -20,14 +21,28 @@ export default class ApplicationController extends Controller {
   }
 
   @action
-  toggleMidiSwitch(){
-    this.toggleProperty("midiEnabled")
+  async midiEnabler(){
+    await this.webmidi.enable()
   }
 
+  @action
+  midiDisabler(){
+    this.webmidi.disable()
+  }
+
+
+
+  @computed('webmidi.midiEnabled')
+  get midiEnabled(){
+    return this.webmidi.midiEnabled
+  }
 
   @action
   updateOutputSelection(ev){
     this.selectedOutput = ev.target.value
   }
+
+  // @equal(this.webmidi.midiStatus(), true) midiEnabled
+  // @equal(this.webmidi.midiStatus(), false) midiDisabled
 
 }

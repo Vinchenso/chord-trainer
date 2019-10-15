@@ -1,7 +1,9 @@
 Chord Trainer
 
 <MidiSwitch
-@toggle = {{ this.toggleMidiSwitch }}
+@enabler = {{ action this.midiEnabler }}
+@disabler = {{ action this.midiDisabler }}
+@error = {{ this.midiError }}
 @status = {{ this.midiEnabled }} />
 
 {{#if this.midiEnabled}}
